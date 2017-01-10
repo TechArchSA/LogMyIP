@@ -10,7 +10,7 @@ if ARGV.size.zero?
   exit 0
 else
   Process.setproctitle("LogMyIP")
-  @wait           = 3600 * 3    # Check My IP each (default: 1 hour)
+  @wait           = 3600 * 1    # Check My IP each (default: 1 hour)
   path            = File.expand_path(ARGV[0], File.dirname(__FILE__))
   @log_path       = "#{path}/logmyip"
   Dir.mkdir(@log_path) unless Dir.exist?(@log_path)
@@ -33,17 +33,19 @@ end
 def logmyip(wait)
   
   tries ||= 20
-  
+  ips = []
   begin
     
     loop do
       ip = open('https://api.ipify.org').read
-      @logger_ip.info("#{ip}\n")
+      @logger_service.debug("IP Check!\n")
+      @logger_ip.info("#{ip}\n") unless ips.include? ip
+      ips << ip
       sleep wait
     end
     
   rescue SystemExit, Interrupt
-    @logger_service.debug("Shutting down #{__FILE__}.")
+    @logger_service.debug("Shutting down #{__FILE__}.\n")
   rescue SocketError => e
     
     if (tries -= 1) > 0
@@ -51,7 +53,7 @@ def logmyip(wait)
       sleep @wait
       retry
     else
-      @logger_service.fatal("Too many connection failure | Shutting down #{__FILE__}.")
+      @logger_service.fatal("Too many connection failure | Shutting down #{__FILE__}.\n")
       exit 0
     end
       
