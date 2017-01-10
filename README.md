@@ -1,5 +1,5 @@
 # Log My IP
-A simple service to log consultant IP during engagements. 
+A simple service to log consultant's IP address during engagements. 
 
 The application contains 2 files:
 
