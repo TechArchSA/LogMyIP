@@ -4,6 +4,7 @@
 #
 require 'open-uri'
 require 'logger'
+require 'libnotify'
 
 if ARGV.size.zero?
   puts "[!] #{__FILE__} < /log/directory/path/ >"
@@ -16,9 +17,8 @@ else
   Dir.mkdir(@log_path) unless Dir.exist?(@log_path)
   
   #
-  # Loggers setup
+  #-> Loggers setup
   #
-  
   # Service Logs
   @logger_service = Logger.new("#{@log_path}/logmyip.log", 'daily', 30)  # Daily rotation, keep 30 days rotations
   @logger_service.datetime_format = '%Y-%m-%d | %H:%M:%S'
@@ -28,6 +28,9 @@ else
   @logger_ip.level = Logger::INFO
   @logger_ip.datetime_format = '%Y-%m-%d | %H:%M:%S'
   @logger_ip.formatter = proc { |s, d, p, m| "[#{d}] #{m}" }
+  
+  # Setup desktop notification
+  @notify = Libnotify.new(:icon_path => :"network-wired-activated", :timeout => 5, :urgency => :critical)
 end
 
 def logmyip(wait)
@@ -39,29 +42,38 @@ def logmyip(wait)
     loop do
       ip = open('https://api.ipify.org').read
       @logger_service.debug("IP Check!\n")
-      @logger_ip.info("#{ip}\n") unless ips.include? ip
+      unless ips.include? ip
+        @logger_ip.info("#{ip}\n")
+        # Libnotify.show(:body => "<h4>#{ip}</h4>", :summary => '<h3>IP Updated!</h3>', :timeout => 2.5)
+        @notify.update(:summary => "<h5>LogMyIP | IP Updated!</h5>", :body => "<strong>#{ip}</strong>")
+      end
       ips << ip
       sleep wait
     end
     
   rescue SystemExit, Interrupt
     @logger_service.debug("Shutting down #{__FILE__}.\n")
+    @notify.update(:summary => "<h5>LogMyIP | Service</h5>", :body => "<strong>Shutting down...</strong>")
   rescue SocketError => e
     
     if (tries -= 1) > 0
       @logger_service.error("#{e.message}\n")
+      @notify.update(:summary => "<h5>LogMyIP | Service</h5>", :body => "<strong>Connection refused!</strong>")
       sleep @wait
       retry
     else
       @logger_service.fatal("Too many connection failure | Shutting down #{__FILE__}.\n")
+      @notify.update(:summary => "<h5>LogMyIP | Service</h5>", :body => "<strong>Connection refused!<br>Shutting down</strong>")
       exit 0
     end
       
   rescue IOError => e
     @logger_service.error("#{e.message}\n")
+    @notify.update(:summary => "<h5>LogMyIP | Service</h5>", :body => "<strong>IOError</strong>")
   rescue Exception => e
     @logger_service.fatal("#{e.message}\n")
     @logger_service.fatal(e.backtrace.join("\n"))
+    @notify.update(:summary => "<h5>LogMyIP | Service</h5>", :body => "<strong>Unknown error</strong>")
   end
   
 end
