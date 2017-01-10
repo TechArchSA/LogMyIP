@@ -13,7 +13,7 @@ gem install daemons
 
 **Run the service**
 
-Notice the `--` used for `logmyip.rb` argument, which is the desired log directory path
+Notice the `--` used for `logmyip.rb` *mandatory* argument, which is the desired log directory path
 
 ```
 ruby logmyipd.rb start -- /log/path/
