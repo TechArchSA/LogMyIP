@@ -1,5 +1,10 @@
-# LogMyIP
-A simple service to log consultant IP during engagements 
+# Log My IP
+A simple service to log consultant IP during engagements. 
+
+The application contains 2 files:
+
+* **logmyip.rb:** The core application
+* **logmyipd.rb:** The daemon, which runs the core application as a service to avoid keep shell/cmd open all the time.
 
 ## Requirements 
 
