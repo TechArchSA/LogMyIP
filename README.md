@@ -52,3 +52,4 @@ ruby logmyipd.rb stop
 * [Feature] Add run as a daemon 
 * [Fix] Repeated IP in logs 
 * [Feature] Adding desktop notification 
+* [Fix] If a file path is given instead of directory path
