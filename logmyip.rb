@@ -3,6 +3,7 @@
 # KING SABRI | @KINGSABRI
 #
 require 'open-uri'
+require 'fileutils'
 require 'logger'
 require 'libnotify'
 
@@ -14,7 +15,7 @@ else
   @wait           = 3600 * 1    # Check My IP each (default: 1 hour)
   path            = File.expand_path(ARGV[0], File.dirname(__FILE__))
   @log_path       = "#{path}/logmyip"
-  Dir.mkdir(@log_path) unless Dir.exist?(@log_path)
+  FileUtils.mkdir_p(@log_path) unless Dir.exist?(@log_path)
   
   #
   #-> Loggers setup
