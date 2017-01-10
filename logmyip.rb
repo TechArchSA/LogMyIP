@@ -2,8 +2,6 @@
 # Log consultant's IP during engagement
 # KING SABRI | @KINGSABRI
 #
-
-require 'daemons'
 require 'open-uri'
 require 'logger'
 
