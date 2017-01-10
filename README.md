@@ -6,6 +6,11 @@ The application contains 2 files:
 * **logmyip.rb:** The core application
 * **logmyipd.rb:** The daemon, which runs the core application as a service to avoid keep shell/cmd open all the time.
 
+## Features 
+
+* Runs as a daemon (support: start, stop, status command and Linux daemons)
+* Support desktop notification
+
 ## Requirements 
 
 ```
@@ -40,3 +45,10 @@ ruby logmyipd.rb status
 ruby logmyipd.rb stop
 ```
 
+
+
+## Changelog
+
+* [Feature] Add run as a daemon 
+* [Fix] Repeated IP in logs 
+* [Feature] Adding desktop notification 
