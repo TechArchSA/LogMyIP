@@ -9,7 +9,7 @@ The application contains 2 files:
 ## Requirements 
 
 ```
-gem install daemons
+gem install daemons libnotify
 ```
 
 
