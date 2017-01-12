@@ -43,7 +43,7 @@ def logmyip(wait)
     loop do
       ip = open('https://api.ipify.org').read
       @logger_service.debug("IP Check!\n")
-      unless ips.include? ip
+      unless ips.last == ip
         @logger_ip.info("#{ip}\n")
         # Libnotify.show(:body => "<h4>#{ip}</h4>", :summary => '<h3>IP Updated!</h3>', :timeout => 2.5)
         @notify.update(:summary => "<h5>LogMyIP | IP Updated!</h5>", :body => "<strong>#{ip}</strong>")
