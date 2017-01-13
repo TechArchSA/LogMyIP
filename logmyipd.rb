@@ -1,3 +1,4 @@
+#!/bin/bash/env ruby
 #
 # The Service | Log consultant's IP during engagement
 # KING SABRI | @KINGSABRI

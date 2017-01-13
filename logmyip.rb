@@ -12,7 +12,7 @@ if ARGV.size.zero?
   exit 0
 else
   Process.setproctitle("LogMyIP")
-  @wait           = 3600 * 1    # Check My IP each (default: 1 hour)
+  @wait           = 60 * 10    # Check My IP each (default: 10 minuts)
   path            = File.expand_path(ARGV[0], File.dirname(__FILE__))
   @log_path       = "#{path}/logmyip"
   FileUtils.mkdir_p(@log_path) unless Dir.exist?(@log_path)
@@ -45,7 +45,6 @@ def logmyip(wait)
       @logger_service.debug("IP Check!\n")
       unless ips.last == ip
         @logger_ip.info("#{ip}\n")
-        # Libnotify.show(:body => "<h4>#{ip}</h4>", :summary => '<h3>IP Updated!</h3>', :timeout => 2.5)
         @notify.update(:summary => "<h5>LogMyIP | IP Updated!</h5>", :body => "<strong>#{ip}</strong>")
       end
       ips << ip

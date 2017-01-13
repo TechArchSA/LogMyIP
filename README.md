@@ -47,9 +47,20 @@ ruby logmyipd.rb stop
 
 
 
+**Troubleshooting** 
+
+```
+ruby logmyipd.rb run -- /log/path/
+```
+
+
+
+**Note:** Desktop notification supports Linux only, If you are going to run it on Windows, please comment out all likes that contains `notify` and `Libnotify` from the code, then you'll good to go. 
+
 ## Changelog
 
 * [Feature] Add run as a daemon 
 * [Fix] Repeated IP in logs 
 * [Feature] Adding desktop notification 
 * [Fix] If a file path is given instead of directory path
+* [Fix] Repeated IP logic 
